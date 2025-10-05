@@ -1,0 +1,30 @@
+<svg width="256" height="256" viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Elthen monogram">
+  <defs>
+    <radialGradient id="bg" cx="30%" cy="30%" r="90%">
+      <stop offset="0%" stop-color="#1f88ff"/>
+      <stop offset="100%" stop-color="#1a2b6d"/>
+    </radialGradient>
+    <filter id="lift" x="-30%" y="-30%" width="160%" height="160%">
+      <feDropShadow dx="0" dy="6" stdDeviation="8" flood-opacity="0.35"/>
+    </filter>
+  </defs>
+
+  <circle cx="128" cy="128" r="120" fill="url(#bg)"/>
+  <g filter="url(#lift)">
+    <text
+      x="50%" y="50%"
+      dominant-baseline="middle" text-anchor="middle"
+      font-family="Inter, Poppins, 'Segoe UI', system-ui, -apple-system, sans-serif"
+      font-size="120" font-weight="900"
+      fill="#ffffff">
+      E
+    </text>
+  </g>
+
+  <!-- 底部小字（可删） -->
+  <text x="50%" y="210" text-anchor="middle"
+        font-family="Inter, Poppins, 'Segoe UI', system-ui, -apple-system, sans-serif"
+        font-size="18" fill="rgba(255,255,255,0.85)" letter-spacing="1.5">
+    Elthen
+  </text>
+</svg>

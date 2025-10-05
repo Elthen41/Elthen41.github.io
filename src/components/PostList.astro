@@ -1,0 +1,107 @@
+---
+import type { CollectionEntry } from 'astro:content';
+
+const { posts = [] } = Astro.props as { posts: CollectionEntry<'posts'>[] };
+
+const makeSearchText = (post: CollectionEntry<'posts'>) =>
+  [
+    post.data.title,
+    post.data.summary,
+    post.data.tags?.join(' '),
+    post.body,
+  ]
+    .filter(Boolean)
+    .join(' ')
+    .replace(/\s+/g, ' ')
+    .trim()
+    .toLowerCase();
+---
+
+<section class="mx-auto max-w-3xl px-6 pb-16">
+  <div class="flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
+    <div>
+      <h2 class="text-2xl font-semibold tracking-tight">最新文章</h2>
+      <p class="mt-1 text-xs text-slate-500">
+        共收录 <span data-search-count>{posts.length}</span> 篇文章
+      </p>
+    </div>
+    <a class="text-sm text-slate-500 hover:text-foreground" href="/feed.xml">RSS 订阅</a>
+  </div>
+  <div class="mt-6">
+    <label class="block text-sm font-medium text-slate-600" for="post-search-input">搜索文章</label>
+    <div class="mt-2">
+      <input
+        class="w-full rounded-lg border border-slate-200 bg-white/70 px-4 py-2 text-sm text-slate-700 shadow-sm focus:border-slate-400 focus:outline-none focus:ring-2 focus:ring-slate-200"
+        id="post-search-input"
+        name="search"
+        type="search"
+        placeholder="请输入关键词，实时筛选文章"
+        autocomplete="off"
+        enterkeyhint="search"
+      />
+    </div>
+  </div>
+  <p class="mt-4 hidden text-sm text-slate-500" data-search-empty aria-live="polite">未找到匹配的文章。</p>
+  <ul class="mt-8 space-y-8" data-post-list>
+    {posts.map((post) => {
+      const { data, slug } = post;
+      const searchText = makeSearchText(post);
+      return (
+        <li
+          class="group rounded-2xl border border-slate-200/70 bg-gradient-to-br from-white via-white to-slate-50 p-6 shadow-[0_6px_20px_rgba(15,23,42,0.05)] transition duration-300 hover:-translate-y-0.5 hover:border-slate-300 hover:shadow-[0_14px_36px_rgba(15,23,42,0.12)]"
+          data-search-item
+          data-search={searchText}
+          key={slug}
+        >
+          <a href={`/blog/${slug}/`} class="no-underline">
+            <p class="text-xs uppercase tracking-[0.3em] text-slate-400">{data.tags?.join(' / ')}</p>
+            <h3 class="mt-3 text-xl font-semibold text-foreground group-hover:text-accent">{data.title}</h3>
+            <p class="mt-3 text-sm leading-6 text-slate-600">{data.summary}</p>
+            <p class="mt-4 text-xs text-slate-400">{new Date(data.pubDate).toLocaleDateString('zh-CN')}</p>
+          </a>
+        </li>
+      );
+    })}
+  </ul>
+</section>
+
+<script>
+  const searchInput = document.getElementById('post-search-input');
+
+  if (searchInput) {
+    const postList = document.querySelector('[data-post-list]');
+    const emptyMessage = document.querySelector('[data-search-empty]');
+    const countEl = document.querySelector('[data-search-count]');
+
+    if (postList) {
+      const items = Array.from(postList.querySelectorAll('[data-search-item]'));
+
+      const update = () => {
+        const rawQuery = searchInput.value.trim().toLowerCase();
+        let visibleCount = 0;
+
+        items.forEach((item) => {
+          const text = item.dataset.search || '';
+          const matches = rawQuery === '' || text.includes(rawQuery);
+          item.hidden = !matches;
+          if (matches) {
+            visibleCount += 1;
+          }
+        });
+
+        if (countEl) {
+          countEl.textContent = String(visibleCount);
+        }
+
+        if (emptyMessage) {
+          emptyMessage.classList.toggle('hidden', visibleCount !== 0);
+        }
+      };
+
+      searchInput.addEventListener('input', update);
+      searchInput.addEventListener('search', update);
+
+      update();
+    }
+  }
+</script>
