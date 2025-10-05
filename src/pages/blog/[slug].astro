@@ -17,15 +17,15 @@ const { post } = Astro.props as { post: CollectionEntry<'posts'> };
 const { Content } = await post.render();
 ---
 
-<BaseLayout title={`${post.data.title} �� Elthen`} description={post.data.summary}>
+<BaseLayout title={`${post.data.title} · Elthen`} description={post.data.summary}>
   <Fragment slot="header">
     <Header />
   </Fragment>
   <article class="mx-auto max-w-3xl px-6 py-16">
-    <p class="text-xs uppercase tracking-[0.3em] text-slate-400">{post.data.tags?.join(' / ')}</p>
-    <h1 class="mt-4 text-4xl font-semibold tracking-tight">{post.data.title}</h1>
-    <p class="mt-3 text-sm text-slate-500">{new Date(post.data.pubDate).toLocaleDateString('zh-CN')}</p>
-    <div class="prose prose-slate mt-10 max-w-none">
+    <p class="text-xs uppercase tracking-[0.3em] text-slate-400 transition-colors dark:text-slate-500">{post.data.tags?.join(' / ')}</p>
+    <h1 class="mt-4 text-4xl font-semibold tracking-tight text-foreground transition-colors">{post.data.title}</h1>
+    <p class="mt-3 text-sm text-slate-500 transition-colors dark:text-slate-400">{new Date(post.data.pubDate).toLocaleDateString('zh-CN')}</p>
+    <div class="prose prose-slate mt-10 max-w-none transition-colors dark:prose-invert">
       <Content />
     </div>
   </article>
