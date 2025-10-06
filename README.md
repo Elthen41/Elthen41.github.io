@@ -1,13 +1,13 @@
 # Elthen中文博客模版
 
-这是一个基于 [Astro](https://astro.build) + Tailwind CSS 的静态博客模版，按照 [siboehm.com](https://siboehm.com) 的信息架构与版式重新设计，方便你快速搭建自己的中文个人网站。
+这是一个基于 [Astro](https://astro.build) + [Tailwind CSS](https://tailwindcss.com/) 的静态博客模版，按照 [siboehm.com](https://siboehm.com) 的信息架构与版式重新设计，方便你快速搭建自己的个人网站。
 
 ## 功能特点
 
 - 🧱 **组件化布局**：主页、博客列表、文章详情、关于页面与页脚组件可复用，轻松扩展新内容。
 - 📝 **Markdown/MDX 文章**：支持在 `src/content/posts` 中用 Markdown 或 MDX 撰写中文内容。
 - 📰 **RSS 订阅**：自动根据文章集合生成 `feed.xml`。
-- 🎨 **现代设计语言**：内置 Inter 字体、柔和配色与响应式排版，复刻 siboehm.com 的干净风格。
+- 🎨 **现代设计语言**：内置 Inter 字体、柔和配色与响应式排版。
 
 ## 本地开发
 
