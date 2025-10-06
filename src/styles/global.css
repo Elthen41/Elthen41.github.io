@@ -67,7 +67,24 @@ a {
 }
 @layer components {
   .caption {
-    @apply mt-3 text-xs font-medium uppercase tracking-[0.3em] text-slate-500 text-center dark:text-slate-400;
-    letter-spacing: 0.4em;
+    margin-top: 0.75rem;
+    display: block;
+    font-size: 0.875rem;
+    line-height: 1.5;
+    font-weight: 500;
+    color: rgba(100, 116, 139, 0.9);
+    text-align: center;
+  }
+
+  .dark .caption {
+    color: rgba(148, 163, 184, 0.85);
+  }
+
+  .caption small {
+    display: block;
+    margin-top: 0.25rem;
+    font-size: 0.75rem;
+    font-weight: 400;
+    opacity: 0.8;
   }
 }
