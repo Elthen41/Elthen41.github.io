@@ -28,6 +28,15 @@ npm run build
 
 生成的静态文件位于 `dist/` 目录，可部署到任何静态空间（GitHub Pages、Vercel、Netlify 等）。
 
+### GitHub Pages 自动部署
+
+1. **仓库命名**：将仓库命名为 `<你的用户名>.github.io` 并推送到 GitHub。
+2. **站点配置**：本仓库已在 `astro.config.mjs` 中将 `site` 字段指向 `https://elthen41.github.io`。如需使用其它域名，请同步修改。
+3. **启用 GitHub Pages**：在仓库中保持 `.github/workflows/deploy.yml` 文件，GitHub Actions 会在 `main` 分支变更时构建并发布最新版本。首次推送后，到仓库 **Settings → Pages** 里选择 “GitHub Actions” 作为发布来源。
+4. **自定义域名（可选）**：如果你有自定义域名，可在设置中添加域名并配置 DNS `CNAME` 记录指向 `<用户名>.github.io`。
+
+工作流会自动安装依赖、运行 `npm run build`，并将 `dist/` 目录发布到 GitHub Pages。稍等几分钟后即可访问你的线上博客。
+
 ## 自定义
 
 - 修改 `src/components/Header.astro` 更新导航与社交链接。

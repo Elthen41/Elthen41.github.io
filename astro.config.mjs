@@ -4,5 +4,5 @@ import tailwind from '@astrojs/tailwind';
 
 export default defineConfig({
   integrations: [mdx(), tailwind()],
-  site: 'https://example.com',
+  site: 'https://elthen41.github.io',
 });
