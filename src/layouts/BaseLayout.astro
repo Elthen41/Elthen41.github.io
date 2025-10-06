@@ -18,8 +18,88 @@ const {
     <title>{title}</title>
     <meta name="description" content={description} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <script is:inline>
+      (() => {
+        const storageKey = 'theme';
+        const className = 'dark';
+        const root = document.documentElement;
+        const media = window.matchMedia('(prefers-color-scheme: dark)');
+        const subscribers = new Set();
+
+        const getStored = () => {
+          try {
+            const value = localStorage.getItem(storageKey);
+            if (value === 'dark' || value === 'light') {
+              return value;
+            }
+          } catch (error) {
+            // Ignore storage access issues.
+          }
+          return null;
+        };
+
+        const notify = (theme) => {
+          subscribers.forEach((callback) => {
+            try {
+              callback(theme);
+            } catch (error) {
+              // Keep going if a subscriber throws.
+            }
+          });
+        };
+
+        const applyTheme = (value, persist) => {
+          const theme = value === 'dark' ? 'dark' : 'light';
+          root.classList.toggle(className, theme === 'dark');
+          root.dataset.theme = theme;
+          if (persist) {
+            try {
+              localStorage.setItem(storageKey, theme);
+            } catch (error) {
+              // Ignore persistence failures.
+            }
+          }
+          notify(theme);
+        };
+
+        const initial = getStored() ?? (media.matches ? 'dark' : 'light');
+        applyTheme(initial, false);
+
+        window.__theme = {
+          set: (value) => applyTheme(value, true),
+          toggle: () => {
+            const next = root.classList.contains(className) ? 'light' : 'dark';
+            applyTheme(next, true);
+            return next;
+          },
+          current: () => (root.classList.contains(className) ? 'dark' : 'light'),
+          clear: () => {
+            try {
+              localStorage.removeItem(storageKey);
+            } catch (error) {
+              // Ignore cleanup failures.
+            }
+            applyTheme(media.matches ? 'dark' : 'light', false);
+          },
+          subscribe: (callback) => {
+            if (typeof callback === 'function') {
+              subscribers.add(callback);
+              callback(root.classList.contains(className) ? 'dark' : 'light');
+              return () => subscribers.delete(callback);
+            }
+            return () => {};
+          },
+        };
+
+        media.addEventListener('change', (event) => {
+          if (getStored() === null) {
+            applyTheme(event.matches ? 'dark' : 'light', false);
+          }
+        });
+      })();
+    </script>
   </head>
-  <body class="bg-background text-foreground">
+  <body class="bg-background text-foreground antialiased">
     <div class="min-h-screen flex flex-col">
       <slot name="header" />
       <main class="flex-1">

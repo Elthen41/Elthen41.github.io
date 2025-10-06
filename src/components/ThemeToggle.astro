@@ -1,0 +1,89 @@
+<button
+  type="button"
+  data-theme-toggle
+  class="inline-flex h-9 w-9 items-center justify-center rounded-full border border-slate-200/70 bg-white/80 text-slate-600 shadow-sm transition-colors hover:border-slate-400 hover:text-foreground focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:border-slate-700/70 dark:bg-slate-800/70 dark:text-slate-200 dark:hover:border-slate-500 dark:hover:text-white dark:focus-visible:ring-offset-slate-900"
+  aria-label="切换到深色模式"
+  aria-pressed="false"
+>
+  <span class="sr-only" data-theme-label>切换到深色模式</span>
+  <svg
+    data-icon="sun"
+    aria-hidden="true"
+    class="h-5 w-5 transition-opacity duration-200"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="1.5"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  >
+    <circle cx="12" cy="12" r="4" />
+    <path d="M12 3v2m0 14v2m9-9h-2M5 12H3m15.364 6.364-1.414-1.414M7.05 7.05 5.636 5.636m12.728 0-1.414 1.414M7.05 16.95l-1.414 1.414" />
+  </svg>
+  <svg
+    data-icon="moon"
+    aria-hidden="true"
+    class="hidden h-5 w-5 transition-opacity duration-200"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="1.5"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  >
+    <path d="M21 12.79A9 9 0 1 1 11.21 3a7 7 0 0 0 9.79 9.79Z" />
+  </svg>
+</button>
+<script>
+  (() => {
+    const button = document.querySelector('[data-theme-toggle]');
+    if (!(button instanceof HTMLButtonElement)) {
+      return;
+    }
+
+    const root = document.documentElement;
+    const label = button.querySelector('[data-theme-label]');
+    const icons = {
+      sun: button.querySelector('[data-icon="sun"]'),
+      moon: button.querySelector('[data-icon="moon"]'),
+    };
+
+    const syncVisual = (theme) => {
+      const mode = theme === 'dark' ? 'dark' : 'light';
+      button.dataset.themeState = mode;
+      button.setAttribute('aria-pressed', mode === 'dark' ? 'true' : 'false');
+      const labelText = mode === 'dark' ? '切换到浅色模式' : '切换到深色模式';
+      button.setAttribute('aria-label', labelText);
+      if (label) {
+        label.textContent = labelText;
+      }
+      if (icons.sun && icons.moon) {
+        icons.sun.classList.toggle('hidden', mode === 'dark');
+        icons.moon.classList.toggle('hidden', mode !== 'dark');
+      }
+    };
+
+    const getCurrentTheme = () => (root.classList.contains('dark') ? 'dark' : 'light');
+
+    const api = window.__theme || null;
+    const unsubscribe = api?.subscribe ? api.subscribe(syncVisual) : null;
+    if (!api?.subscribe) {
+      syncVisual(getCurrentTheme());
+    }
+
+    button.addEventListener('click', () => {
+      const next = api?.toggle ? api.toggle() : getCurrentTheme() === 'dark' ? 'light' : 'dark';
+      if (!api?.toggle) {
+        root.classList.toggle('dark', next === 'dark');
+        root.dataset.theme = next;
+      }
+      syncVisual(next);
+    });
+
+    window.addEventListener('beforeunload', () => {
+      if (typeof unsubscribe === 'function') {
+        unsubscribe();
+      }
+    });
+  })();
+</script>
