@@ -4,15 +4,11 @@ summary: 如何用系统化的方式理解产品设计中的对话与反馈循�
 pubDate: 2022-02-02
 ---
 
-import { Image } from 'astro:assets'
-import detroit from '../../assets/posts/detroit.png'
-
-<Image
-  src={detroit}
+<img
+  src="/assets/posts/detroit.png"
   alt="示意图"
-  widths={[480, 768, 1200]}
-  sizes="(min-width: 768px) 768px, 100vw"
   class="rounded-xl border border-slate-200 shadow-sm dark:border-slate-700 dark:bg-slate-900/60"
+  loading="lazy"
 />
 <a href="https://www.quanticdream.com/en/detroit-become-human/" target="_blank">
   <div class="caption">底特律：变人</div>
