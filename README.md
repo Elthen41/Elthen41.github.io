@@ -1,6 +1,6 @@
 # Elthen中文博客模版
 
-这是一个基于 [Astro](https://astro.build) + Tailwind CSS 的静态博客模版，按照 [siboehm.com](https://siboehm.com) 的信息架构与版式重新设计，方便你快速搭建自己的中文个人网站。
+这是一个基于 [Astro](https://astro.build) + Tailwind CSS 的静态博客模版，按照 [siboehm.com](https://siboehm.com) 的信息架构与版式重新设计，借此模版可以方便你快速搭建自己的个人网站。
 
 ## 功能特点
 
