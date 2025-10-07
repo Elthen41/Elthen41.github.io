@@ -6,3 +6,5 @@ dist
 
 # Astro
 .astro
+
+./src/content/posts/cpu-matrix-mul.mdx
